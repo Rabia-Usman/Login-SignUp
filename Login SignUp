@@ -1,0 +1,115 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using LoginSignupinClasses.BL;
+
+namespace LoginSignupinClasses
+{
+    class Program
+    {
+        static int index;
+        static void Main(string[] args)
+        {
+            const int RECORDS = 5;
+            User[] user = new User[RECORDS]; 
+            int count = 0;
+            bool check;
+            char option = ' ';
+            Header();
+            do
+            {
+                option = Menu();
+                if (option == '1')
+                {
+                    if (count <= 5)
+                    {
+                        user[count] = SignUp();
+                        Console.WriteLine("Your account has created.");
+                        count = count+1;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Space for fuether Records!!!!");
+                    }
+
+                }
+                if (option == '2')
+                {
+                        check = SignIn(count, user);
+                        if (check== true)
+                        {
+                            Console.WriteLine("Security Key : "+ user[index].SecurityKey);
+                            Thread.Sleep(400);
+                        }
+                }
+                if(option == '3')
+                {
+                    Console.WriteLine("You have exited the Window.");
+                }
+            } while (option != '3');
+            Console.ReadKey();
+        }
+        static void Header()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("        ______    ______ _____             _____  _____  _______ _     _ ");
+            Console.WriteLine("|     | |        |       |    |    |      |     | |    |    |    |*    | ");
+            Console.WriteLine("|     | |______  |______ |____|    |      |     | |         |    |  *  | ");
+            Console.WriteLine("|     |       |  |       | *       |      |     | |  __     |    |   * | ");
+            Console.WriteLine("|_____| ______|  |______ |  *_     |_____ |_____| |____| ___|___ |_   *|_");
+        }
+        static char Menu()
+        {
+           // Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("1.   SignIn");
+            Console.WriteLine("2.   SignUp");
+            Console.WriteLine("3.   Exit");
+            Console.WriteLine("Enter Option : ");
+            char option = ' ';
+            option = char.Parse(Console.ReadLine());
+            return option;
+        }
+        static bool SignIn(int count , User[] user)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            string name, password;
+            Console.WriteLine("Enter Name : ");
+            name = Console.ReadLine();
+            Console.WriteLine("Enter Password : ");
+            password = Console.ReadLine();
+            for (int i = 0; i < count; i++)
+            {
+                if(user[i].name == name && user[i].password == password)
+                {
+                    index = i;
+                    return true;
+                } 
+            }
+                return false;
+        }
+        static User SignUp()
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            User s = new User();
+            Console.WriteLine("Enter Name : ");
+            s.name = Console.ReadLine();
+            Console.WriteLine("Enter Password : ");
+            s.password = Console.ReadLine();
+            Console.WriteLine("Enter Security Key : ");
+            s.SecurityKey = Console.ReadLine();
+            ClearScreen();
+            return s;
+        }
+        static void ClearScreen()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
+            Console.Clear();
+        }
+    }
+}
